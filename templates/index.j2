@@ -1,0 +1,14 @@
+<table>
+    <thead>
+        <tr>
+            Track Name
+        </tr>
+    </thead>
+    <tbody>
+{% for track_id in tracks %}
+        <tr>
+            <td><a href="/track/{{track_id}}">{{tracks[track_id].get_time_bounds().end_time}}</a><td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
