@@ -25,7 +25,6 @@ def main():
     parser.add_argument("--port", type=int, default=5000)
     args = parser.parse_args()
 
-
     app = Flask(__name__)
     app.config["tracks"] = load_tracks(args.tracks_path)
     print(app.config["tracks"])
