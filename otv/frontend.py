@@ -17,8 +17,8 @@ def format_datetime(input_datetime: datetime):
 
 @frontend.route("/track/<string:track_id>")
 def track_page(track_id: str):
-    return(render_template("track.j2", track=current_app.config["tracks"][track_id]))
+    return(render_template("track.html.j2", track=current_app.config["tracks"][track_id]))
 
 @frontend.route("/")
 def index_page():
-    return(render_template("index.j2", tracks=current_app.config["tracks"]))
+    return(render_template("index.html.j2", tracks=current_app.config["tracks"]))
