@@ -1,21 +1,24 @@
-{% set moving_data = track.get_moving_data() %}
-{% set uphill_downhill = track.get_uphill_downhill() %}
-{% set time_bounds = track.get_time_bounds() %}
-
-Activity Type: {{track.tracks[0].type}}<br/>
-<br/>
-Length 2D: {{"%.3f"|format(track.length_2d()/1000)}} km<br/>
-Length 3D: {{"%.3f"|format(track.length_3d()/1000)}} km<br/>
-<br/>
-Moving time: {{moving_data.moving_time|int|format_duration}}<br/>
-Stopped time: {{moving_data.stopped_time|int|format_duration}}<br/>
-<br/>
-Max Speed: {{"%.3f"|format(moving_data.max_speed*3.6)}} km/h<br/>
-Average Speed: {{"%.3f"|format(moving_data.moving_distance/moving_data.moving_time*3.6)}} km/h<br/>
-<br/>
-Total uphill: {{uphill_downhill.uphill|round|int}} meters<br/>
-Total downhill: {{uphill_downhill.downhill|round|int}} meters<br/>
-<br/>
-Start Time: {{time_bounds.start_time|format_datetime}}<br/>
-End Time: {{time_bounds.end_time|format_datetime}}<br/>
-<br/>
+{%- extends "base.html.j2" %}
+{%- set moving_data = track.get_moving_data() %}
+{%- set uphill_downhill = track.get_uphill_downhill() %}
+{%- set time_bounds = track.get_time_bounds() %}
+{%- block title %}<title>OpenTracks Viewer - {{time_bounds.start_time|format_datetime}}</title>{% endblock %}
+{%- block content %}
+    Activity Type: {{track.tracks[0].type}}<br/>
+    <br/>
+    Length 2D: {{"%.3f"|format(track.length_2d()/1000)}} km<br/>
+    Length 3D: {{"%.3f"|format(track.length_3d()/1000)}} km<br/>
+    <br/>
+    Moving time: {{moving_data.moving_time|int|format_duration}}<br/>
+    Stopped time: {{moving_data.stopped_time|int|format_duration}}<br/>
+    <br/>
+    Max Speed: {{"%.3f"|format(moving_data.max_speed*3.6)}} km/h<br/>
+    Average Speed: {{"%.3f"|format(moving_data.moving_distance/moving_data.moving_time*3.6)}} km/h<br/>
+    <br/>
+    Total uphill: {{uphill_downhill.uphill|round|int}} meters<br/>
+    Total downhill: {{uphill_downhill.downhill|round|int}} meters<br/>
+    <br/>
+    Start Time: {{time_bounds.start_time|format_datetime}}<br/>
+    End Time: {{time_bounds.end_time|format_datetime}}<br/>
+    <br/>
+{%- endblock %}
