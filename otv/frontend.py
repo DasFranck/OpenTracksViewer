@@ -13,7 +13,7 @@ def format_duration(duration: int):
 
 @frontend.app_template_filter()
 def format_datetime(input_datetime: datetime):
-    return(input_datetime.strftime("%Y-%m-%d %H:%M:%S"))
+    return(input_datetime.strftime("%Y-%m-%d %H:%M:%S")) #Careful UTC
 
 @frontend.route("/track/<string:track_id>")
 def track_page(track_id: str):

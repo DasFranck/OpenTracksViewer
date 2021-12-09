@@ -18,10 +18,10 @@
                     {%- set moving_data = track.get_moving_data() %}
                     {%- set uphill_downhill = track.get_uphill_downhill() %}
                     {%- set time_bounds = track.get_time_bounds() %}
-                    <td scope="row"><a href="/track/{{track_id}}">{{time_bounds.start_time|format_datetime}}</a></th>
+                    <td scope="row"><a href="/track/{{track_id}}">{{time_bounds.start_time|format_datetime}}</a></td>
                     <td>{{track.tracks[0].type|capitalize}}</td>
                     <td>{{moving_data.moving_time|int|format_duration}}</td>
-                    <td>{{"%.3f"|format(track.length_2d()/1000|round|int)}} km </td>
+                    <td>{{"%.3f"|format(track.length_2d()/1000|round|int)}} km</td>
                     <td>{{uphill_downhill.uphill|round|int}}m</td>
                     <td>{{uphill_downhill.downhill|round|int}}m</td>
                 </tr>
