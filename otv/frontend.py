@@ -20,7 +20,8 @@ def track_page(track_id: str):
     track = current_app.config["tracks"][track_id]
     return(render_template("track.html.j2", 
            track=track,
-           polyline_points=[[point.point.latitude, point.point.longitude] for point in track.get_points_data()]
+           polyline_points=[[point.point.latitude, point.point.longitude] for point in track.get_points_data()],
+           elevation_list=[[point.distance_from_start, point.point.elevation] for point in track.get_points_data()]
     ))
 
 @frontend.route("/")
