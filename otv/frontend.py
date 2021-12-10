@@ -17,7 +17,11 @@ def format_datetime(input_datetime: datetime):
 
 @frontend.route("/track/<string:track_id>")
 def track_page(track_id: str):
-    return(render_template("track.html.j2", track=current_app.config["tracks"][track_id]))
+    track = current_app.config["tracks"][track_id]
+    return(render_template("track.html.j2", 
+           track=track,
+           polyline_points=[[point.point.latitude, point.point.longitude] for point in track.get_points_data()]
+    ))
 
 @frontend.route("/")
 def index_page():
