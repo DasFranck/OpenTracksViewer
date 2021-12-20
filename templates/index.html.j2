@@ -19,7 +19,7 @@
                     {%- set uphill_downhill = track.get_uphill_downhill() %}
                     {%- set time_bounds = track.get_time_bounds() %}
                     <td scope="row"><a href="/track/{{track_id}}">{{time_bounds.start_time|format_datetime}}</a></td>
-                    <td>{{track.tracks[0].type|capitalize}}</td>
+                    <td>{{track.tracks[0].type|get_activity_emoji(with_text=True)}}</td>
                     <td>{{moving_data.moving_time|int|format_duration}}</td>
                     <td>{{"%.3f"|format(track.length_2d()/1000|round|int)}} km</td>
                     <td>{{uphill_downhill.uphill|round|int}}m</td>
