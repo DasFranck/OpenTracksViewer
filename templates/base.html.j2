@@ -31,7 +31,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 {% for activity in get_activity_list()|sort %}
-                                    <li><a class="dropdown-item" href="/activities/{{activity}}">{{activity|capitalize}}</a></li>
+                                    <li><a class="dropdown-item" href="/activity/{{activity}}">{{activity|capitalize}}</a></li>
                                 {% endfor %}
                             </ul>
                         </li>
@@ -41,9 +41,9 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             {% for year, month_list in get_monthly_report_name().items() %}
-                                <li><a class="dropdown-item" href="/reports/{{year}}">{{year}}</a></li>
+                                <li><a class="dropdown-item" href="/report/{{year}}">{{year}}</a></li>
                                 {% for month in month_list|sort(reverse=True) %}
-                                    <li><a class="dropdown-item" href="/reports/{{year}}/{{month}}">- {{month|get_month_name}}</a></li>
+                                    <li><a class="dropdown-item" href="/report/{{year}}/{{month}}">- {{month|get_month_name}}</a></li>
                                 {% endfor %}
                                 <div class="dropdown-divider"></div>
                             {% endfor %}

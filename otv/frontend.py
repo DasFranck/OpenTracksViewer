@@ -62,6 +62,26 @@ def track_page(track_id: str) -> str:
            elevation_list=[[point.distance_from_start, point.point.elevation] for point in track.get_points_data()]
     ))
 
+@frontend.route("/activity/<string:activity>")
+def activity_page(activity: str) -> str:
+    return(render_template("activity.html.j2",
+    ))
+
+@frontend.route("/report/<int:year>")
+def report_year_page(year: int) -> str:
+    return(render_template("report_year.html.j2",
+    ))
+
+@frontend.route("/report/<int:year>/<int:month>")
+def report_month_page(year: int, month: int) -> str:
+    return(render_template("report_month.html.j2",
+    ))
+
+@frontend.route("/report/<int:year>/<int:month>/<int:day>")
+def report_day_page(year: int, month: int, day: int) -> str:
+    return(render_template("report_day.html.j2",
+    ))
+
 @frontend.route("/")
 def index_page() -> str:
     return(render_template("index.html.j2", tracks=current_app.config["tracks"]))
