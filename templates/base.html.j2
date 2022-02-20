@@ -13,9 +13,48 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-    {%- block navbar %}
-    {%- endblock %}
-    {%- block content %}
-    {%- endblock %}
+        {%- block navbar %}
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">OpenTracks Viewer</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Index</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Activities
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                {% for activity in get_activity_list()|sort %}
+                                    <li><a class="dropdown-item" href="/activities/{{activity}}">{{activity|capitalize}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Reports
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            {% for year, month_list in get_monthly_report_name().items() %}
+                                <li><a class="dropdown-item" href="/reports/{{year}}">{{year}}</a></li>
+                                {% for month in month_list|sort(reverse=True) %}
+                                    <li><a class="dropdown-item" href="/reports/{{year}}/{{month}}">- {{month|get_month_name}}</a></li>
+                                {% endfor %}
+                                <div class="dropdown-divider"></div>
+                            {% endfor %}
+                            </ul>
+                        </li>
+                </ul>
+                </div>
+            </div>
+            </nav>
+        {%- endblock %}
+        {%- block content %}
+        {%- endblock %}
     </body>
 </html>
