@@ -1,3 +1,5 @@
+import logging
+
 from calendar import month_name
 from datetime import datetime
 from typing import Dict, List, Set
@@ -13,12 +15,13 @@ def get_monthly_report_name() -> Dict[str, Set[str]]:
     monthly_reports = {}
 
     for track in current_app.config["tracks"].values():
-        start = track.get_time_bounds()[0]
-        if (year := start.date().year) in monthly_reports:
-            monthly_reports[year].add(start.date().month)
+        if (start := track.get_time_bounds()[0]):
+            if (year := start.date().year) in monthly_reports:
+                monthly_reports[year].add(start.date().month)
+            else:
+                monthly_reports[year] = {start.date().month}
         else:
-            monthly_reports[year] = {start.date().month}
-
+            logging.info("Track %s has no start date, it may be empty", track.name)
     return monthly_reports
 
 @frontend.app_template_global()
@@ -56,7 +59,7 @@ def format_datetime(input_datetime: datetime) -> str:
 @frontend.route("/track/<string:track_id>")
 def track_page(track_id: str) -> str:
     track = current_app.config["tracks"][track_id]
-    return(render_template("track.html.j2", 
+    return(render_template("track.html.j2",
            track=track,
            polyline_points=[[point.point.latitude, point.point.longitude] for point in track.get_points_data()],
            elevation_list=[[point.distance_from_start, point.point.elevation] for point in track.get_points_data()]

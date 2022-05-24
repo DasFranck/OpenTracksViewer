@@ -18,7 +18,9 @@ def load_tracks(tracks_path: str) -> List[GPXTrack]:
         for filename in filenames:
             if filename.endswith(".gpx"):
                 with open(os.path.join(dirpath, filename)) as fd:
-                    tracks[os.path.splitext(filename)[0]] = gpxpy.parse(fd)
+                    track = gpxpy.parse(fd)
+                    if track.get_points_data():
+                        tracks[os.path.splitext(filename)[0]] = track
     return tracks
 
 def main():
