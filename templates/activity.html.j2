@@ -1,0 +1,43 @@
+{%- extends "base.html.j2" %}
+
+{%- block head %} {{ super() }}
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+            integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+{%- endblock %}
+
+{%- block title %}<title>OpenTracks Viewer - {{activity|get_activity_emoji(with_text=True)}}</title>{% endblock %}
+
+{%- block content %}
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin="">
+        </script>
+
+    <div class="d-flex justify-content-center">
+        <h1 class="display-1">{{activity|get_activity_emoji(with_text=True)}}</h1> 
+    </div>
+            <br> 
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div id="map"></div>
+                <style>#map { height: 1000px; }</style>
+                <script>
+                    var map = L.map('map');
+
+                    var osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap',
+                        maxZoom: 19
+                    });
+
+                    var heatPoints = {{ get_all_gpx_points(activity=activity) }}
+                    map.addLayer(osmLayer);
+                    map.addLayer(L.heatLayer(heatMapData))
+                
+                    map.fitBounds(polyline.getBounds());
+                </script>
+            </div>
+        </div>
+    </div>
+{%- endblock %}
