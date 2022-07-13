@@ -3,16 +3,14 @@
 import argparse
 import os
 
-from typing import List
-
 import gpxpy
 
 from flask import Flask
-from gpxpy.gpx import GPXTrack
+from gpxpy.gpx import GPX
 
 from otv.frontend import frontend
 
-def load_tracks(tracks_path: str) -> List[GPXTrack]:
+def load_tracks(tracks_path: str) -> dict[str, GPX]:
     tracks = {}
     for dirpath, _, filenames in os.walk(tracks_path):
         for filename in filenames:

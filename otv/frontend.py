@@ -2,16 +2,15 @@ import logging
 
 from calendar import month_name
 from datetime import datetime
-from typing import Dict, List, Set
 
 from flask import Blueprint, render_template, flash, redirect, url_for, g, current_app
-from gpxpy.gpx import GPXTrack
+from gpxpy.gpx import GPXTrackPoint, GPX
 
 frontend = Blueprint("frontend", __name__)
 
 
 @frontend.app_template_global()
-def get_monthly_report_name() -> Dict[str, Set[str]]:
+def get_monthly_report_name() -> dict[str, set[str]]:
     monthly_reports = {}
 
     for track in current_app.config["tracks"].values():
@@ -25,7 +24,25 @@ def get_monthly_report_name() -> Dict[str, Set[str]]:
     return monthly_reports
 
 @frontend.app_template_global()
-def get_activity_list() -> Set[str]:
+def get_all_gpx_points(activity: str = "", year: int = 0, month: int = 0) -> list[GPXTrackPoint]:
+    """
+    Get all points.
+    Can filter by activity, year and/or month
+    """
+    all_points = []
+    for track in current_app.config["tracks"].values():
+        track: GPX
+        if activity and track.tracks[0].type != activity:
+            continue
+        if year and track.get_time_bounds().start_time.year != year:
+            continue
+        if month and track.get_time_bounds().start_time.month != month:
+            continue
+        all_points += [[point_data.point.latitude, point_data.point.longitude] for point_data in track.get_points_data()]
+    return all_points
+
+@frontend.app_template_global()
+def get_activity_list() -> set[str]:
     return {track.tracks[0].type for track in current_app.config["tracks"].values()}
 
 @frontend.app_template_filter()
@@ -68,6 +85,7 @@ def track_page(track_id: str) -> str:
 @frontend.route("/activity/<string:activity>")
 def activity_page(activity: str) -> str:
     return(render_template("activity.html.j2",
+        activity=activity
     ))
 
 @frontend.route("/report/<int:year>")
