@@ -1,4 +1,9 @@
 {%- extends "base.html.j2" %}
+
+{%- block title %}<title>OpenTracks Viewer - {{ month|get_month_name }} {{ year }}</title>{% endblock %}
+
 {%- block content %}
-Total distance per activity:
+{% set month_tracks = get_all_tracks(year=year, month=month) %}
+
+Total distance per activity this month: 
 {%- endblock %}

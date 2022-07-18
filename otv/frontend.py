@@ -27,7 +27,7 @@ def get_monthly_report_list() -> dict[str, set[str]]:
     return monthly_reports
 
 @frontend.app_template_global()
-def get_all_points(activity: str = None, year: int = None, month: int = None) -> list[GPXTrackPoint]:
+def get_all_points(activity: str = None, year: int = None, month: int = None, day: int = None) -> list[GPXTrackPoint]:
     """
     Get all points, useful for heatmaps
     Can filter by activity, year and/or month
@@ -35,7 +35,10 @@ def get_all_points(activity: str = None, year: int = None, month: int = None) ->
     all_points = []
     for track in current_app.config["tracks"].values():
         track: Track
-        if track.activity != activity and track.start_time.year != year and track.start_time.month != month:
+        if ((not activity or track.activity == activity) and
+            (not year and track.start_time.year != year) and
+            (not month or track.start_time.month != month) and
+            (not day or track.start_time.day != day)):
             all_points += [[point_data.point.latitude, point_data.point.longitude] for point_data in track.points]
     return all_points
 
@@ -102,21 +105,29 @@ def activity_page(activity: str) -> str:
 def report_year_page(year: int) -> str:
     return(render_template("report_year.html.j2",
         year=year,
-        year_tracks=None
+        year_tracks=get_all_tracks(year=year),
     ))
 
 @frontend.route("/report/<int:year>/<int:month>")
 def report_month_page(year: int, month: int) -> str:
     return(render_template("report_month.html.j2",
-        month_tracks=None
+        year=year,
+        month=month,
+        month_tracks=get_all_tracks(year=year, month=month),
     ))
 
 @frontend.route("/report/<int:year>/<int:month>/<int:day>")
 def report_day_page(year: int, month: int, day: int) -> str:
     return(render_template("report_day.html.j2",
-        day_tracks=None
+        year=year,
+        month=month,
+        day=day,
+        day_tracks=get_all_tracks(year=year, month=month, day=day),
     ))
 
 @frontend.route("/")
 def index_page() -> str:
-    return(render_template("index.html.j2", tracks=current_app.config["tracks"]))
+    return(render_template(
+        "index.html.j2",
+        tracks=current_app.config["tracks"])
+    )
