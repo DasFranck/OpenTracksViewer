@@ -47,7 +47,10 @@ def get_all_tracks(activity: str = None, year: int = 0, month: int = 0, day: int
     all_tracks = []
     for track in current_app.config["tracks"].values():
         track: Track
-        if track.activity != activity and track.start_time.year != year and track.start_time.month != month:
+        if ((not activity or track.activity == activity) and
+            (not year and track.start_time.year != year) and
+            (not month or track.start_time.month != month) and
+            (not day or track.start_time.day != day)):
             all_tracks.append(track)
     return all_tracks
 
