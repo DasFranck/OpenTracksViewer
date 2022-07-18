@@ -89,7 +89,7 @@ def track_page(track_id: str) -> str:
     return(render_template("track.html.j2",
            track=track,
            polyline_points=[[point.latitude, point.longitude] for point in track.points],
-           elevation_list=[[point.distance_from_start, point.elevation] for point in track.points]
+           elevation_list=[[point.distance_2d, point.elevation] for point in track.points]
     ))
 
 @frontend.route("/activity/<string:activity>")

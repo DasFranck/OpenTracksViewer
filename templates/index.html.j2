@@ -1,5 +1,13 @@
 {%- extends "base.html.j2" %}
+
+{%- block head %} {{ super() }}
+    <link type="text/css" href="{{ url_for('static', filename='./node_modules/datatables/media/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+{%- endblock %}
+
 {%- block content %}
+        <script type="text/javascript" charset="utf8" src="{{ url_for('static', filename='./node_modules/jquery/dist/jquery.min.js') }}"></script>
+        <script type="text/javascript" charset="utf8" src="{{ url_for('static', filename='./node_modules/datatables/media/js/jquery.dataTables.js') }}"></script>
+        <br/>
         <table id="track_list" class="display">
             <thead>
                 <tr>
@@ -26,12 +34,15 @@
             </tbody>
         </table>
         <script>
-            let table = new DataTable('#track_list', {
-                "paging": false,
-                "order": [[ 0, 'desc' ]],
-                "columnDefs": [
-                    { "targets": "_all", "className": "dt-center" }
-                ]
+            $(document).ready( function () {
+                $('#track_list').DataTable({
+                    paging: false,
+                    order: [[ 0, 'desc' ]],
+                    columnDefs: [
+                        { targets: "_all", className: "dt-center" }
+                    ]
+                })
             });
+            let table = new DataTable('#track_list', );
         </script>
 {%- endblock %}
