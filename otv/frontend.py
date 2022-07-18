@@ -2,6 +2,7 @@ import calendar
 import logging
 
 from datetime import datetime
+from typing import Any
 
 from flask import Blueprint, render_template, flash, redirect, url_for, g, current_app
 from gpxpy.gpx import GPXTrackPoint
@@ -55,8 +56,14 @@ def get_all_tracks(activity: str = None, year: int = 0, month: int = 0, day: int
     return all_tracks
 
 @frontend.app_template_global()
-def get_activity_list() -> set[str]:
-    return {track.activity for track in current_app.config["tracks"].values()}
+def get_activity_list(tracks: list[Track]|dict[Any, Track]) -> set[str]:
+    if isinstance(tracks, dict):
+        return {track.activity for track in tracks.values()}
+    elif isinstance(tracks, list):
+        return {track.activity for track in tracks}
+    else:
+        raise TypeError("get_activity_list only takes list of Track or dict with Track as a value")
+
 
 @frontend.app_template_filter()
 def get_month_name(month_number: int) -> str:
