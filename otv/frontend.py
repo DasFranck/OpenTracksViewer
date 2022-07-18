@@ -65,6 +65,8 @@ def get_activity_emoji(activity_name: str, with_text: bool = False) -> str:
             emoji = "🚣"
         case "walking":
             emoji = "🚶"
+        case "jogging":
+            emoji = "🏃"
         case _:
             emoji = ""
     return f"{activity_name.capitalize() + ' ' if with_text else ''}{emoji}"
