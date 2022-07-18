@@ -31,10 +31,7 @@
                         maxZoom: 19
                     });
 
-                    var heatPoints = {{ get_all_gpx_points(activity=activity) }}
                     map.addLayer(osmLayer);
-                    map.addLayer(L.heatLayer(heatMapData))
-                
                     map.fitBounds(polyline.getBounds());
                 </script>
             </div>

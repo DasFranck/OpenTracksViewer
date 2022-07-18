@@ -6,29 +6,34 @@ import os
 import gpxpy
 
 from flask import Flask
-from gpxpy.gpx import GPX
+from gpxpy.gpx import GPXTrack
 
 from otv.frontend import frontend
+from otv.track import Track
 
-def load_tracks(tracks_path: str) -> dict[str, GPX]:
+
+def load_gpxs(gpxs_path: str) -> dict[str, Track]:
     tracks = {}
-    for dirpath, _, filenames in os.walk(tracks_path):
+    for dirpath, _, filenames in os.walk(gpxs_path):
         for filename in filenames:
             if filename.endswith(".gpx"):
                 with open(os.path.join(dirpath, filename)) as fd:
-                    track = gpxpy.parse(fd)
-                    if track.get_points_data():
-                        tracks[os.path.splitext(filename)[0]] = track
+                    for index, track in enumerate(gpxpy.parse(fd).tracks):
+                        if track.length_3d():
+                            tracks[f"{os.path.splitext(filename)[0]}-{index}"] = Track(
+                                f"{os.path.splitext(filename)[0]}-{index}",
+                                track
+                            )
     return tracks
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("tracks_path")
+    parser.add_argument("gpxs_path")
     parser.add_argument("--port", type=int, default=5000)
     args = parser.parse_args()
 
     app = Flask(__name__)
-    app.config["tracks"] = load_tracks(args.tracks_path)
+    app.config["tracks"] = load_gpxs(args.gpxs_path)
     print(app.config["tracks"])
     app.register_blueprint(frontend)
     app.run(port=args.port)

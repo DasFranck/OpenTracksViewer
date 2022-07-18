@@ -1,16 +1,12 @@
 {%- extends "base.html.j2" %}
 
-{%- set moving_data = track.get_moving_data() %}
-{%- set uphill_downhill = track.get_uphill_downhill() %}
-{%- set time_bounds = track.get_time_bounds() %}
-
 {%- block head %} {{ super() }}
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
             integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
         crossorigin=""/>
 {%- endblock %}
 
-{%- block title %}<title>OpenTracks Viewer - {{time_bounds.start_time|format_datetime}}</title>{% endblock %}
+{%- block title %}<title>OpenTracks Viewer - {{track.start_time|format_datetime}}</title>{% endblock %}
 
 {%- block content %}
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
@@ -19,7 +15,7 @@
         </script>
 
     <div class="d-flex justify-content-center">
-        <h1 class="display-1">{{time_bounds.start_time|format_datetime}}</h1> 
+        <h1 class="display-1">{{track.start_time|format_datetime}}</h1> 
     </div>
             <br> 
     <div class="container">
@@ -42,22 +38,22 @@
                 </script>
             </div>
             <div class="col-4 my-auto">
-                <b>Activity Type:</b> {{track.tracks[0].type|capitalize}}<br/>
+                <b>Activity Type:</b> {{track.activity|capitalize}}<br/>
                 <br/>
-                <b>Length 2D:</b> {{"%.3f"|format(track.length_2d()/1000)}} km<br/>
-                <b>Length 3D:</b> {{"%.3f"|format(track.length_3d()/1000)}} km<br/>
+                <b>Length 2D:</b> {{"%.3f"|format(track.length_2d/1000)}} km<br/>
+                <b>Length 3D:</b> {{"%.3f"|format(track.length_3d/1000)}} km<br/>
                 <br/>
-                <b>Moving time:</b> {{moving_data.moving_time|int|format_duration}}<br/>
-                <b>Stopped time:</b> {{moving_data.stopped_time|int|format_duration}}<br/>
+                <b>Moving time:</b> {{track.moving_time|int|format_duration}}<br/>
+                <b>Stopped time:</b> {{track.stopped_time|int|format_duration}}<br/>
                 <br/>
-                <b>Max Speed:</b> {{"%.3f"|format(moving_data.max_speed*3.6)}} km/h<br/>
-                <b>Average Speed:</b> {{"%.3f"|format(moving_data.moving_distance/moving_data.moving_time*3.6)}} km/h<br/>
+                <b>Max Speed:</b> {{"%.3f"|format(track.max_speed*3.6)}} km/h<br/>
+                <b>Average Speed:</b> {{"%.3f"|format(track.moving_distance/track.moving_time*3.6)}} km/h<br/>
                 <br/>
-                <b>Total uphill:</b> {{uphill_downhill.uphill|round|int}} meters<br/>
-                <b>Total downhill:</b> {{uphill_downhill.downhill|round|int}} meters<br/>
+                <b>Total uphill:</b> {{track.uphill|round|int}} meters<br/>
+                <b>Total downhill:</b> {{track.downhill|round|int}} meters<br/>
                 <br/>
-                <b>Start Time:</b> {{time_bounds.start_time|format_datetime}}<br/>
-                <b>End Time:</b> {{time_bounds.end_time|format_datetime}}<br/>
+                <b>Start Time:</b> {{track.start_time|format_datetime}}<br/>
+                <b>End Time:</b> {{track.end_time|format_datetime}}<br/>
                 <br/>
             </div>
         </div>

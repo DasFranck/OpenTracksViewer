@@ -1,53 +1,60 @@
+import calendar
 import logging
 
-from calendar import month_name
 from datetime import datetime
 
 from flask import Blueprint, render_template, flash, redirect, url_for, g, current_app
-from gpxpy.gpx import GPXTrackPoint, GPX
+from gpxpy.gpx import GPXTrackPoint
+
+from otv.track import Track
 
 frontend = Blueprint("frontend", __name__)
 
 
 @frontend.app_template_global()
-def get_monthly_report_name() -> dict[str, set[str]]:
+def get_monthly_report_list() -> dict[str, set[str]]:
+    """
+    Output dict with year as key and set of months as value
+    """
     monthly_reports = {}
 
     for track in current_app.config["tracks"].values():
-        if (start := track.get_time_bounds()[0]):
-            if (year := start.date().year) in monthly_reports:
-                monthly_reports[year].add(start.date().month)
-            else:
-                monthly_reports[year] = {start.date().month}
+        track: Track
+        if (year := track.start_time.year) in monthly_reports:
+            monthly_reports[year].add(track.start_time.month)
         else:
-            logging.info("Track %s has no start date, it may be empty", track.name)
+            monthly_reports[year] = {track.start_time.month}
     return monthly_reports
 
 @frontend.app_template_global()
-def get_all_gpx_points(activity: str = "", year: int = 0, month: int = 0) -> list[GPXTrackPoint]:
+def get_all_points(activity: str = None, year: int = None, month: int = None) -> list[GPXTrackPoint]:
     """
-    Get all points.
+    Get all points, useful for heatmaps
     Can filter by activity, year and/or month
     """
     all_points = []
     for track in current_app.config["tracks"].values():
-        track: GPX
-        if activity and track.tracks[0].type != activity:
-            continue
-        if year and track.get_time_bounds().start_time.year != year:
-            continue
-        if month and track.get_time_bounds().start_time.month != month:
-            continue
-        all_points += [[point_data.point.latitude, point_data.point.longitude] for point_data in track.get_points_data()]
+        track: Track
+        if track.activity != activity and track.start_time.year != year and track.start_time.month != month:
+            all_points += [[point_data.point.latitude, point_data.point.longitude] for point_data in track.points]
     return all_points
 
 @frontend.app_template_global()
+def get_all_tracks(activity: str = None, year: int = 0, month: int = 0, day: int = 0):
+    all_tracks = []
+    for track in current_app.config["tracks"].values():
+        track: Track
+        if track.activity != activity and track.start_time.year != year and track.start_time.month != month:
+            all_tracks.append(track)
+    return all_tracks
+
+@frontend.app_template_global()
 def get_activity_list() -> set[str]:
-    return {track.tracks[0].type for track in current_app.config["tracks"].values()}
+    return {track.activity for track in current_app.config["tracks"].values()}
 
 @frontend.app_template_filter()
 def get_month_name(month_number: int) -> str:
-    return month_name[month_number]
+    return calendar.month_name[month_number]
 
 @frontend.app_template_filter()
 def get_activity_emoji(activity_name: str, with_text: bool = False) -> str:
@@ -73,13 +80,14 @@ def format_duration(duration: int) -> str:
 def format_datetime(input_datetime: datetime) -> str:
     return(input_datetime.strftime("%Y-%m-%d %H:%M:%S")) #Careful UTC
 
+
 @frontend.route("/track/<string:track_id>")
 def track_page(track_id: str) -> str:
-    track = current_app.config["tracks"][track_id]
+    track: Track = current_app.config["tracks"][track_id]
     return(render_template("track.html.j2",
            track=track,
-           polyline_points=[[point.point.latitude, point.point.longitude] for point in track.get_points_data()],
-           elevation_list=[[point.distance_from_start, point.point.elevation] for point in track.get_points_data()]
+           polyline_points=[[point.latitude, point.longitude] for point in track.points],
+           elevation_list=[[point.distance_from_start, point.elevation] for point in track.points]
     ))
 
 @frontend.route("/activity/<string:activity>")
@@ -91,16 +99,20 @@ def activity_page(activity: str) -> str:
 @frontend.route("/report/<int:year>")
 def report_year_page(year: int) -> str:
     return(render_template("report_year.html.j2",
+        year=year,
+        year_tracks=None
     ))
 
 @frontend.route("/report/<int:year>/<int:month>")
 def report_month_page(year: int, month: int) -> str:
     return(render_template("report_month.html.j2",
+        month_tracks=None
     ))
 
 @frontend.route("/report/<int:year>/<int:month>/<int:day>")
 def report_day_page(year: int, month: int, day: int) -> str:
     return(render_template("report_day.html.j2",
+        day_tracks=None
     ))
 
 @frontend.route("/")
