@@ -3,7 +3,12 @@
 {%- block title %}<title>OpenTracks Viewer - {{ month|get_month_name }} {{ year }}</title>{% endblock %}
 
 {%- block content %}
-{% set month_tracks = get_all_tracks(year=year, month=month) %}
-
-Total distance per activity this month: 
+<div class="container">
+    Activities:
+    <ul>
+    {% for activity in get_activity_list(tracks) %}
+        <li>{{activity|get_activity_emoji(True)}} - {{"%.3f"|format(tracks|selectattr("activity", "equalto", activity)|sum(attribute="length_2d")/1000|round|int)}}km</li>
+    {% endfor %}
+    </ul>
+</div>
 {%- endblock %}

@@ -2,7 +2,7 @@ import calendar
 import logging
 
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional
 
 from flask import Blueprint, render_template, flash, redirect, url_for, g, current_app
 from gpxpy.gpx import GPXTrackPoint
@@ -43,20 +43,21 @@ def get_all_points(activity: str = None, year: int = None, month: int = None, da
             all_points += [[point_data.point.latitude, point_data.point.longitude] for point_data in track.points]
     return all_points
 
-@frontend.app_template_global()
-def get_all_tracks(activity: str = None, year: int = 0, month: int = 0, day: int = 0):
+def get_all_tracks(activity: str = None, year: int = 0, month: int = 0, day: int = 0) -> list[Track]:
     all_tracks = []
     for track in current_app.config["tracks"].values():
         track: Track
         if ((not activity or track.activity == activity) and
-            (not year and track.start_time.year != year) and
-            (not month or track.start_time.month != month) and
-            (not day or track.start_time.day != day)):
+            (not year or track.start_time.year == year) and
+            (not month or track.start_time.month == month) and
+            (not day or track.start_time.day == day)):
             all_tracks.append(track)
     return all_tracks
 
 @frontend.app_template_global()
-def get_activity_list(tracks: list[Track]|dict[Any, Track]) -> set[str]:
+def get_activity_list(tracks: Optional[list[Track]|dict[Any, Track]] = None) -> set[str]:
+    if tracks == None:
+        tracks = current_app.config["tracks"]
     if isinstance(tracks, dict):
         return {track.activity for track in tracks.values()}
     elif isinstance(tracks, list):
@@ -115,7 +116,7 @@ def activity_page(activity: str) -> str:
 def report_year_page(year: int) -> str:
     return(render_template("report_year.html.j2",
         year=year,
-        year_tracks=get_all_tracks(year=year),
+        tracks=get_all_tracks(year=year),
     ))
 
 @frontend.route("/report/<int:year>/<int:month>")
@@ -123,7 +124,7 @@ def report_month_page(year: int, month: int) -> str:
     return(render_template("report_month.html.j2",
         year=year,
         month=month,
-        month_tracks=get_all_tracks(year=year, month=month),
+        tracks=get_all_tracks(year=year, month=month),
     ))
 
 @frontend.route("/report/<int:year>/<int:month>/<int:day>")
@@ -132,7 +133,7 @@ def report_day_page(year: int, month: int, day: int) -> str:
         year=year,
         month=month,
         day=day,
-        day_tracks=get_all_tracks(year=year, month=month, day=day),
+        tracks=get_all_tracks(year=year, month=month, day=day),
     ))
 
 @frontend.route("/")
