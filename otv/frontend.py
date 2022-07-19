@@ -2,6 +2,7 @@ import calendar
 import logging
 
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from typing import Any, Optional
 
 from flask import Blueprint, render_template, flash, redirect, url_for, g, current_app
@@ -114,26 +115,47 @@ def activity_page(activity: str) -> str:
 
 @frontend.route("/report/<int:year>")
 def report_year_page(year: int) -> str:
+    tracks = get_all_tracks(year=year)
     return(render_template("report_year.html.j2",
         year=year,
-        tracks=get_all_tracks(year=year),
+        activities=get_activity_list(tracks),
+        tracks=tracks,
+        periods_label=[f"{month:02}/{year}" for month in range(1, 13)],
+        periods=[(
+            datetime(year, month, 1, tzinfo=current_app.config["timezone"]),
+            (datetime(year, month, 1, tzinfo=current_app.config["timezone"]) + relativedelta(months=+1)) - relativedelta(microseconds=+1)
+            )
+            for month in range(1, 13)
+        ]
     ))
 
 @frontend.route("/report/<int:year>/<int:month>")
 def report_month_page(year: int, month: int) -> str:
+    day_list = range(1, calendar.monthrange(year, month)[1] + 1)
+    tracks = get_all_tracks(year=year, month=month)
     return(render_template("report_month.html.j2",
         year=year,
         month=month,
-        tracks=get_all_tracks(year=year, month=month),
+        activities=get_activity_list(tracks),
+        tracks=tracks,
+        periods_label=[f"{day:02}/{month:02}" for day in day_list],
+        periods=[(
+            datetime(year, month, day, tzinfo=current_app.config["timezone"]),
+            (datetime(year, month, day, tzinfo=current_app.config["timezone"]) + relativedelta(days=+1)) - relativedelta(microseconds=+1)
+            )
+            for day in day_list
+        ]
     ))
 
 @frontend.route("/report/<int:year>/<int:month>/<int:day>")
 def report_day_page(year: int, month: int, day: int) -> str:
+    tracks = get_all_tracks(year=year, month=month, day=day)
     return(render_template("report_day.html.j2",
         year=year,
         month=month,
         day=day,
-        tracks=get_all_tracks(year=year, month=month, day=day),
+        activities=get_activity_list(tracks),
+        tracks=tracks,
     ))
 
 @frontend.route("/")

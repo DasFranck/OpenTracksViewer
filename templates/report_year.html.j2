@@ -1,0 +1,52 @@
+{%- extends "base.html.j2" %}
+
+{%- block title %}<title>OpenTracks Viewer -  {{ year }}</title>{% endblock %}
+
+{%- block content %}
+<script src="{{ url_for('static', filename='node_modules/chart.js/dist/chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='node_modules/chartjs-plugin-autocolors/dist/chartjs-plugin-autocolors.min.js') }}"></script>
+
+<div class="container">
+    Activities:
+    <ul>
+    {% for activity in activities|sort %}
+        <li>{{activity|get_activity_emoji(True)}} - {{"%.3f"|format(tracks|selectattr("activity", "==", activity)|sum(attribute="length_2d")/1000)}}km</li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div>
+    <canvas id="timeChart"></canvas>
+    <script>
+        const ctx = document.getElementById('timeChart');
+        const timeChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{periods_label}},
+                datasets: [
+                {%- for activity in activities %}
+                    {
+                        label: '{{ activity }}',
+                        data: [
+                        {%- for index in range(periods|length) -%}
+                            {{"%.3f"|format(tracks|selectattr("activity", "==", activity)|selectattr("start_time", ">=", periods[index][0])|selectattr("start_time", "<=", periods[index][1])|sum(attribute="length_2d")/1000)}},
+                        {%- endfor -%}
+                        ]
+                    },
+                {%- endfor %}
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+            plugins: [
+                window['chartjs-plugin-autocolors']
+            ]
+        });
+    </script>
+</div>
+{%- endblock %}
