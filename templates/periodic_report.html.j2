@@ -31,7 +31,8 @@
                         {%- for index in range(periods|length) -%}
                             {{"%.3f"|format(tracks|selectattr("activity", "==", activity)|selectattr("start_time", ">=", periods[index][0])|selectattr("start_time", "<=", periods[index][1])|sum(attribute="length_2d")/1000)}},
                         {%- endfor -%}
-                        ]
+                        ],
+                        backgroundColor: "{{ activity|get_activity_color }}"
                     },
                 {%- endfor %}
                 ]

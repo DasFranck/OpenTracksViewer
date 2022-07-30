@@ -1,5 +1,6 @@
 import calendar
 import logging
+import random
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -85,6 +86,22 @@ def get_activity_emoji(activity_name: str, with_text: bool = False) -> str:
         case _:
             emoji = ""
     return f"{activity_name.capitalize() + ' ' if with_text else ''}{emoji}"
+
+@frontend.app_template_filter()
+def get_activity_color(activity_name: str) -> str:
+    match activity_name.lower():
+        case "biking":
+            return "#fff859"
+        case "kayaking":
+            return "#ffa559"
+        case "walking":
+            return "#a559ff"
+        case "jogging":
+            return "#59b3ff"
+        case _:
+            return f"#{''.join([random.choice('0123456789ABCDEF') for j in range(6)])}"
+
+
 
 @frontend.app_template_filter()
 def format_duration(duration: int) -> str:
