@@ -101,8 +101,6 @@ def get_activity_color(activity_name: str) -> str:
         case _:
             return f"#{''.join([random.choice('0123456789ABCDEF') for j in range(6)])}"
 
-
-
 @frontend.app_template_filter()
 def format_duration(duration: int) -> str:
     hours = duration // 3600
