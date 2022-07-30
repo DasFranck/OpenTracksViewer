@@ -116,7 +116,7 @@ def activity_page(activity: str) -> str:
 @frontend.route("/report/<int:year>")
 def report_year_page(year: int) -> str:
     tracks = get_all_tracks(year=year)
-    return(render_template("report_year.html.j2",
+    return(render_template("periodic_report.html.j2",
         year=year,
         activities=get_activity_list(tracks),
         tracks=tracks,
@@ -133,7 +133,7 @@ def report_year_page(year: int) -> str:
 def report_month_page(year: int, month: int) -> str:
     day_list = range(1, calendar.monthrange(year, month)[1] + 1)
     tracks = get_all_tracks(year=year, month=month)
-    return(render_template("report_year.html.j2",
+    return(render_template("periodic_report.html.j2",
         year=year,
         month=month,
         activities=get_activity_list(tracks),
@@ -150,7 +150,7 @@ def report_month_page(year: int, month: int) -> str:
 @frontend.route("/report/<int:year>/<int:month>/<int:day>")
 def report_day_page(year: int, month: int, day: int) -> str:
     tracks = get_all_tracks(year=year, month=month, day=day)
-    return(render_template("report_day.html.j2",
+    return(render_template("periodic_report.html.j2",
         year=year,
         month=month,
         day=day,
