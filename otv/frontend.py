@@ -133,7 +133,7 @@ def report_year_page(year: int) -> str:
 def report_month_page(year: int, month: int) -> str:
     day_list = range(1, calendar.monthrange(year, month)[1] + 1)
     tracks = get_all_tracks(year=year, month=month)
-    return(render_template("report_month.html.j2",
+    return(render_template("report_year.html.j2",
         year=year,
         month=month,
         activities=get_activity_list(tracks),

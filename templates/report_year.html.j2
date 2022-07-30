@@ -1,6 +1,6 @@
 {%- extends "base.html.j2" %}
 
-{%- block title %}<title>OpenTracks Viewer -  {{ year }}</title>{% endblock %}
+{%- block title %}<title>OpenTracks Viewer - {{ year }}{% if month is defined %} - {{month|get_month_name}}{% endif %}{% if day is defined %} - {{day}}{% endif %}</title>{% endblock %}
 
 {%- block content %}
 <script src="{{ url_for('static', filename='node_modules/chart.js/dist/chart.min.js') }}"></script>
