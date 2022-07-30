@@ -41,7 +41,18 @@
                     y: {
                         beginAtZero: true
                     }
-                }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let text = context.parsed.y || 'NaN';
+                                text += ' km';
+                                return text;
+                            },
+                        },
+                    },
+                },
             }
         });
     </script>
