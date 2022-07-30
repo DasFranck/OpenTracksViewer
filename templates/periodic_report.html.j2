@@ -4,7 +4,6 @@
 
 {%- block content %}
 <script src="{{ url_for('static', filename='node_modules/chart.js/dist/chart.min.js') }}"></script>
-<script src="{{ url_for('static', filename='node_modules/chartjs-plugin-autocolors/dist/chartjs-plugin-autocolors.min.js') }}"></script>
 
 <div class="container">
     Activities:
@@ -43,10 +42,7 @@
                         beginAtZero: true
                     }
                 }
-            },
-            plugins: [
-                window['chartjs-plugin-autocolors']
-            ]
+            }
         });
     </script>
 </div>
