@@ -2,14 +2,12 @@
 
 import argparse
 import os
-import pytz
+import logging
 
 import gpxpy
 
 from flask import Flask
-from gpxpy.gpx import GPXTrack
 
-from otv import config
 from otv.frontend import frontend
 from otv.track import Track
 
@@ -35,9 +33,9 @@ def main():
     args = parser.parse_args()
 
     app = Flask(__name__)
+    app.config.from_object("config.UserConfig")
+    app.config.from_object("config.UserConfig")
     app.config["tracks"] = load_gpxs(args.gpxs_path)
-    app.config["timezone"] = pytz.timezone(config.timezone)
-    print(app.config["tracks"])
     app.register_blueprint(frontend)
     app.run(port=args.port)
 
