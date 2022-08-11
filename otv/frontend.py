@@ -1,5 +1,6 @@
 import calendar
 import logging
+from pprint import pprint
 import random
 
 from datetime import datetime
@@ -9,6 +10,7 @@ from typing import Any, Optional
 from flask import Blueprint, render_template, flash, redirect, url_for, g, current_app
 from gpxpy.gpx import GPXTrackPoint
 
+from classes.TileLayer import TileLayer
 from otv.track import Track
 
 frontend = Blueprint("frontend", __name__)
@@ -116,8 +118,11 @@ def format_datetime(input_datetime: datetime) -> str:
 @frontend.route("/track/<string:track_id>")
 def track_page(track_id: str) -> str:
     track: Track = current_app.config["tracks"][track_id]
+    pprint(current_app.config)
     return(render_template("track.html.j2",
            track=track,
+           default_tile_layer=current_app.config["DEFAULT_TILE_LAYER"],
+           tile_layers=TileLayer,
            polyline_points=[[point.latitude, point.longitude] for point in track.points],
            elevation_list=[[point.distance_2d, point.elevation] for point in track.points]
     ))
