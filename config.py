@@ -8,6 +8,9 @@ class UserConfig:
     """
     This is where you can edit OTV Behaviour
     """
+    HOST = "127.0.0.1"
+    PORT = 5000
+
     # Timezone used by OTV for date processing
     TIMEZONE = pytz.timezone("Europe/Paris")
 
