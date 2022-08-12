@@ -2,7 +2,6 @@
 
 import argparse
 import os
-import logging
 
 import gpxpy
 
@@ -26,18 +25,29 @@ def load_gpxs(gpxs_path: str) -> dict[str, Track]:
                             )
     return tracks
 
+def load_config(app: Flask, args: argparse.Namespace):
+    app.config.from_object(args.config)
+    if args.log_level:
+        app.logger.setLevel(args.log_level.upper())
+    else:
+        app.logger.setLevel(app.config["DEFAULT_LOGGING_LEVEL"])
+    app.logger.info("Config loaded")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("gpxs_path")
     parser.add_argument("--host", type=str, default="127.0.0.1")
     parser.add_argument("--port", type=int, default=5000)
     parser.add_argument("--config", type=str, default="config.UserConfig", help="Config's object path")
+    parser.add_argument("--log-level", type=str.capitalize, default=None, choices=["Critical", "Error", "Warning", "Info", "Debug", "NotSet"])
+
     args = parser.parse_args()
 
     app = Flask(__name__)
-    app.config.from_object(args.config)
+    load_config(app, args)
     app.config["tracks"] = load_gpxs(args.gpxs_path)
-    app.logger.setLevel(app.config["DEFAULT_LOGGING_LEVEL"])
+    app.logger.info("%d tracks loaded", len(app.config["tracks"]))
     app.register_blueprint(frontend)
     app.run(host=args.host, port=args.port)
 
