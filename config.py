@@ -4,12 +4,6 @@ import pytz
 from classes.TileLayer import TileLayer
 
 
-class StaticConfig:
-    """
-    Config needed by OTV, not meant to be edited
-    """
-    TILE_LAYERS = TileLayer
-
 class UserConfig:
     """
     This is where you can edit OTV Behaviour
