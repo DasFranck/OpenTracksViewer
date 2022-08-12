@@ -29,16 +29,17 @@ def load_gpxs(gpxs_path: str) -> dict[str, Track]:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("gpxs_path")
+    parser.add_argument("--host", type=str, default="0.0.0.0")
     parser.add_argument("--port", type=int, default=5000)
+    parser.add_argument("--config", type=str, default="config.UserConfig", help="Config's object path")
     args = parser.parse_args()
 
     app = Flask(__name__)
-    app.config.from_object("config.UserConfig")
-    app.config.from_object("config.UserConfig")
+    app.config.from_object(args.config)
     app.config["tracks"] = load_gpxs(args.gpxs_path)
     app.logger.setLevel(app.config["DEFAULT_LOGGING_LEVEL"])
     app.register_blueprint(frontend)
-    app.run(port=args.port)
+    app.run(host=args.host, port=args.port)
 
 
 if __name__ == "__main__":
