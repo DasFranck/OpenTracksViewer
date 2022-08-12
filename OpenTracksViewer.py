@@ -36,6 +36,7 @@ def main():
     app.config.from_object("config.UserConfig")
     app.config.from_object("config.UserConfig")
     app.config["tracks"] = load_gpxs(args.gpxs_path)
+    app.logger.setLevel(app.config["DEFAULT_LOGGING_LEVEL"])
     app.register_blueprint(frontend)
     app.run(port=args.port)
 
