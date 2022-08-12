@@ -1,3 +1,4 @@
+import logging
 import pytz
 
 from classes.TileLayer import TileLayer
@@ -18,3 +19,5 @@ class UserConfig:
 
     # Default Tile Layer to be used by Leaflet Maps
     DEFAULT_TILE_LAYER = TileLayer.CYCLE
+
+    DEFAULT_LOGGING_LEVEL = logging.INFO
