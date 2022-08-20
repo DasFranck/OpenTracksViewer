@@ -21,10 +21,9 @@ def get_monthly_report_list() -> dict[str, set[str]]:
     """
     Output dict with year as key and set of months as value
     """
-    monthly_reports = {}
+    monthly_reports: dict[str, set[str]] = {}
 
     for track in current_app.config["tracks"].values():
-        track: Track
         if (year := track.start_time.year) in monthly_reports:
             monthly_reports[year].add(track.start_time.month)
         else:
@@ -32,25 +31,23 @@ def get_monthly_report_list() -> dict[str, set[str]]:
     return monthly_reports
 
 @frontend.app_template_global()
-def get_all_points(activity: str = None, year: int = None, month: int = None, day: int = None) -> list[GPXTrackPoint]:
+def get_all_points(activity: str = None, year: int = None, month: int = None, day: int = None) -> list[tuple[float, float]]:
     """
     Get all points, useful for heatmaps
     Can filter by activity, year and/or month
     """
     all_points = []
     for track in current_app.config["tracks"].values():
-        track: Track
         if ((not activity or track.activity == activity) and
             (not year and track.start_time.year != year) and
             (not month or track.start_time.month != month) and
             (not day or track.start_time.day != day)):
-            all_points += [[point_data.point.latitude, point_data.point.longitude] for point_data in track.points]
+            all_points += [(point.latitude, point.longitude) for point in track.points]
     return all_points
 
 def get_all_tracks(activity: str = None, year: int = 0, month: int = 0, day: int = 0) -> list[Track]:
     all_tracks = []
     for track in current_app.config["tracks"].values():
-        track: Track
         if ((not activity or track.activity == activity) and
             (not year or track.start_time.year == year) and
             (not month or track.start_time.month == month) and
@@ -63,9 +60,9 @@ def get_activity_list(tracks: Optional[list[Track]|dict[Any, Track]] = None) -> 
     if tracks == None:
         tracks = current_app.config["tracks"]
     if isinstance(tracks, dict):
-        return {track.activity for track in tracks.values()}
+        return {track.activity for track in tracks.values() if track.activity}
     elif isinstance(tracks, list):
-        return {track.activity for track in tracks}
+        return {track.activity for track in tracks if track.activity}
     else:
         raise TypeError("get_activity_list only takes list of Track or dict with Track as a value")
 
