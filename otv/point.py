@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 class Point:
     latitude: float
     longitude: float
-    elevation: float
-    time: datetime
-    time_since_start: timedelta
+    elevation: float | None
+    time: datetime | None
+    time_since_start: timedelta | None
     distance_2d: float
     distance_3d: float

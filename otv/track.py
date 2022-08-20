@@ -6,19 +6,19 @@ from .point import Point
 
 class Track:
     name: str
-    activity: str
+    activity: str | None
     points: list[Point]
 
-    start_time: datetime
-    end_time: datetime
+    start_time: datetime | None
+    end_time: datetime | None
     
     length_2d: float
     length_3d: float
     
-    min_latitude: float
-    max_latitude: float
-    min_longitude: float
-    max_longitude: float
+    min_latitude: float | None
+    max_latitude: float | None
+    min_longitude: float | None
+    max_longitude: float | None
     
     uphill: float
     downhill: float
@@ -39,12 +39,18 @@ class Track:
                 longitude=gpx_point.longitude,
                 elevation=gpx_point.elevation,
                 time=gpx_point.time,
-                time_since_start=gpx_points[0].time - gpx_point.time,
+                time_since_start=gpx_points[0].time - gpx_point.time if gpx_points[0].time and gpx_point.time else None,
                 distance_2d=total_2d_distance,
                 distance_3d=total_3d_distance
             ))
-            total_2d_distance += gpx_point.distance_2d(gpx_points[index-1])
-            total_3d_distance += gpx_point.distance_3d(gpx_points[index-1])
+            if point_distance_2d := gpx_point.distance_2d(gpx_points[index-1]):
+                total_2d_distance += point_distance_2d
+            else:
+                pass #Add warning error here
+            if point_distance_3d := gpx_point.distance_3d(gpx_points[index-1]):
+                total_3d_distance += point_distance_3d
+            else:
+                pass #Add warning error here
         return points
 
     def __init__(self, track_name: str, gpx_track: GPXTrack):
@@ -57,10 +63,13 @@ class Track:
         self.start_time = time_bounds.start_time
         self.end_time = time_bounds.end_time
         bounds = gpx_track.get_bounds()
-        self.min_latitude = bounds.min_latitude
-        self.max_latitude = bounds.max_latitude
-        self.min_longitude = bounds.min_longitude
-        self.max_longitude = bounds.max_longitude
+        if bounds:
+            self.min_latitude = bounds.min_latitude
+            self.max_latitude = bounds.max_latitude
+            self.min_longitude = bounds.min_longitude
+            self.max_longitude = bounds.max_longitude
+        else:
+            self.min_latitude, self.max_latitude, self.min_longitude, self.max_longitude = 4 * (None,)
         uphill_downhill = gpx_track.get_uphill_downhill()
         self.uphill = uphill_downhill.uphill
         self.downhill = uphill_downhill.downhill
