@@ -131,3 +131,6 @@ dmypy.json
 # NPM Related files
 package-lock.json
 node_modules
+
+# VSCode
+.vscode
