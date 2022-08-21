@@ -7,8 +7,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from typing import Any, Optional
 
-from flask import Blueprint, render_template, flash, redirect, url_for, g, current_app
-from gpxpy.gpx import GPXTrackPoint
+from flask import Blueprint, render_template, current_app
 
 from classes.TileLayer import TileLayer
 from otv.track import Track
