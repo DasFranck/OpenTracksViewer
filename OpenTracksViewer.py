@@ -16,12 +16,11 @@ def load_gpxs(gpxs_path: str) -> dict[str, Track]:
     for dirpath, _, filenames in os.walk(gpxs_path):
         for filename in filenames:
             if filename.endswith(".gpx"):
-                with open(os.path.join(dirpath, filename)) as fd:
-                    for index, track in enumerate(gpxpy.parse(fd).tracks):
+                with open(os.path.join(dirpath, filename)) as gpx_file:
+                    for index, track in enumerate(gpxpy.parse(gpx_file).tracks):
                         if track.length_3d():
                             tracks[f"{os.path.splitext(filename)[0]}-{index}"] = Track(
-                                f"{os.path.splitext(filename)[0]}-{index}",
-                                track
+                                f"{os.path.splitext(filename)[0]}-{index}", track
                             )
     return tracks
 
@@ -36,7 +35,6 @@ def load_config(app: Flask, args: argparse.Namespace):
     if args.port:
         app.config["PORT"] = args.port
     app.logger.info("Config loaded")
-
 
 def main():
     parser = argparse.ArgumentParser()
