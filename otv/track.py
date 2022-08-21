@@ -4,6 +4,7 @@ from gpxpy.gpx import GPXTrack, GPXTrackPoint
 
 from .point import Point
 
+
 class Track:
     name: str
     activity: str | None
@@ -11,15 +12,15 @@ class Track:
 
     start_time: datetime | None
     end_time: datetime | None
-    
+
     length_2d: float
     length_3d: float
-    
+
     min_latitude: float | None
     max_latitude: float | None
     min_longitude: float | None
     max_longitude: float | None
-    
+
     uphill: float
     downhill: float
 
@@ -30,27 +31,33 @@ class Track:
     max_speed: float
 
     def _get_points(self, gpx_points: list[GPXTrackPoint]) -> list[Point]:
-        total_2d_distance = 0.
-        total_3d_distance = 0.
+        total_2d_distance = 0.0
+        total_3d_distance = 0.0
         points = []
         for index, gpx_point in enumerate(gpx_points):
-            points.append(Point(
-                latitude=gpx_point.latitude,
-                longitude=gpx_point.longitude,
-                elevation=gpx_point.elevation,
-                time=gpx_point.time,
-                time_since_start=gpx_points[0].time - gpx_point.time if gpx_points[0].time and gpx_point.time else None,
-                distance_2d=total_2d_distance,
-                distance_3d=total_3d_distance
-            ))
-            if point_distance_2d := gpx_point.distance_2d(gpx_points[index-1]):
+            points.append(
+                Point(
+                    latitude=gpx_point.latitude,
+                    longitude=gpx_point.longitude,
+                    elevation=gpx_point.elevation,
+                    time=gpx_point.time,
+                    time_since_start=(
+                        gpx_points[0].time - gpx_point.time
+                        if gpx_points[0].time and gpx_point.time
+                        else None
+                    ),
+                    distance_2d=total_2d_distance,
+                    distance_3d=total_3d_distance,
+                )
+            )
+            if point_distance_2d := gpx_point.distance_2d(gpx_points[index - 1]):
                 total_2d_distance += point_distance_2d
             else:
-                pass #Add warning error here
-            if point_distance_3d := gpx_point.distance_3d(gpx_points[index-1]):
+                pass  # Add warning error here
+            if point_distance_3d := gpx_point.distance_3d(gpx_points[index - 1]):
                 total_3d_distance += point_distance_3d
             else:
-                pass #Add warning error here
+                pass  # Add warning error here
         return points
 
     def __init__(self, track_name: str, gpx_track: GPXTrack):
@@ -69,7 +76,12 @@ class Track:
             self.min_longitude = bounds.min_longitude
             self.max_longitude = bounds.max_longitude
         else:
-            self.min_latitude, self.max_latitude, self.min_longitude, self.max_longitude = 4 * (None,)
+            (
+                self.min_latitude,
+                self.max_latitude,
+                self.min_longitude,
+                self.max_longitude,
+            ) = 4 * (None,)
         uphill_downhill = gpx_track.get_uphill_downhill()
         self.uphill = uphill_downhill.uphill
         self.downhill = uphill_downhill.downhill
@@ -81,4 +93,3 @@ class Track:
         self.moving_distance = moving_data.moving_distance
         self.stopped_distance = moving_data.stopped_distance
         self.max_speed = moving_data.max_speed
-
