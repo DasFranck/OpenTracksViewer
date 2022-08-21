@@ -19,25 +19,8 @@
                 <div id="map"></div>
                 <style>#map { height: 1000px; }</style>
                 <script>
-                    // Init map 
-                    var map = L.map('map');
-
-                    // Build dict of baseTileLayers and set map default layer
-                    var baseTileLayers = {}
-                    {% for layer in tile_layers %}
-                        baseTileLayers["{{layer.name}}"] =
-                            L.tileLayer("{{layer.value[0]}}", {
-                                attribution: "{{layer.value[1]}}",
-                                maxZoom: 19
-                            })
-                        {% if layer.name == default_tile_layer.name %}
-                            map.addLayer(baseTileLayers["{{layer.name}}"])
-                        {% endif %}
-                    {% endfor %}
-
-                    // Create layerControl
-                    var layerControl = L.control.layers(baseTileLayers).addTo(map) 
-
+                    {% include "leaflet.js.j2" %}
+                    
                     // Setup track display on map
                     var polylinePoints = {{ polyline_points }};
                     var polyline = L.polyline(polylinePoints).addTo(map);
