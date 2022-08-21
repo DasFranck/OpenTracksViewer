@@ -138,8 +138,8 @@ def report_year_page(year: int) -> str:
         tracks=tracks,
         periods_label=[f"{month:02}/{year}" for month in range(1, 13)],
         periods=[(
-            datetime(year, month, 1, tzinfo=current_app.config["timezone"]),
-            (datetime(year, month, 1, tzinfo=current_app.config["timezone"]) + relativedelta(months=+1)) - relativedelta(microseconds=+1)
+            datetime(year, month, 1, tzinfo=current_app.config["TIMEZONE"]),
+            (datetime(year, month, 1, tzinfo=current_app.config["TIMEZONE"]) + relativedelta(months=+1)) - relativedelta(microseconds=+1)
             )
             for month in range(1, 13)
         ]
@@ -156,8 +156,8 @@ def report_month_page(year: int, month: int) -> str:
         tracks=tracks,
         periods_label=[f"{day:02}/{month:02}" for day in day_list],
         periods=[(
-            datetime(year, month, day, tzinfo=current_app.config["timezone"]),
-            (datetime(year, month, day, tzinfo=current_app.config["timezone"]) + relativedelta(days=+1)) - relativedelta(microseconds=+1)
+            datetime(year, month, day, tzinfo=current_app.config["TIMEZONE"]),
+            (datetime(year, month, day, tzinfo=current_app.config["TIMEZONE"]) + relativedelta(days=+1)) - relativedelta(microseconds=+1)
             )
             for day in day_list
         ]
