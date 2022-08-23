@@ -16,13 +16,14 @@ def load_gpxs(gpxs_path: str) -> dict[str, Track]:
     for dirpath, _, filenames in os.walk(gpxs_path):
         for filename in filenames:
             if filename.endswith(".gpx"):
-                with open(os.path.join(dirpath, filename)) as gpx_file:
+                with open(os.path.join(dirpath, filename), encoding="utf8") as gpx_file:
                     for index, track in enumerate(gpxpy.parse(gpx_file).tracks):
                         if track.length_3d():
                             tracks[f"{os.path.splitext(filename)[0]}-{index}"] = Track(
                                 f"{os.path.splitext(filename)[0]}-{index}", track
                             )
     return tracks
+
 
 def load_config(app: Flask, args: argparse.Namespace):
     app.config.from_object(args.config)
@@ -36,13 +37,32 @@ def load_config(app: Flask, args: argparse.Namespace):
         app.config["PORT"] = args.port
     app.logger.info("Config loaded")
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("gpxs_path")
-    parser.add_argument("--host", type=str, default=None)
-    parser.add_argument("--port", type=int, default=None)
-    parser.add_argument("--config", type=str, default="config.UserConfig", help="Config's object path")
-    parser.add_argument("--log-level", type=str.capitalize, default=None, choices=["Critical", "Error", "Warning", "Info", "Debug", "NotSet"])
+    parser.add_argument(
+        "--host",
+        type=str,
+        default=None
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=None
+    )
+    parser.add_argument(
+        "--config",
+        type=str,
+        default="config.UserConfig",
+        help="Config's object path"
+    )
+    parser.add_argument(
+        "--log-level",
+        type=str.capitalize,
+        default=None,
+        choices=["Critical", "Error", "Warning", "Info", "Debug", "NotSet"]
+    )
 
     args = parser.parse_args()
 

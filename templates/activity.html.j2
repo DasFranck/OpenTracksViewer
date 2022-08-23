@@ -19,15 +19,7 @@
                 <div id="map"></div>
                 <style>#map { height: 1000px; }</style>
                 <script>
-                    var map = L.map('map');
-
-                    var osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                        attribution: '© OpenStreetMap',
-                        maxZoom: 19
-                    });
-
-                    map.addLayer(osmLayer);
-                    map.fitBounds(polyline.getBounds());
+                    {% include "leaflet.js.j2" %}
                 </script>
             </div>
         </div>

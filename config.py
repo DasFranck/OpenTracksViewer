@@ -1,13 +1,13 @@
 import logging
+
 import pytz
 
 from classes.TileLayer import TileLayer
 
 
 class UserConfig:
-    """
-    This is where you can edit OTV Behaviour
-    """
+    """This is where you can edit OTV Behaviour."""
+
     HOST = "127.0.0.1"
     PORT = 5000
 
