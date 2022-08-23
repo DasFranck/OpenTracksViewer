@@ -1,5 +1,4 @@
 import calendar
-import logging
 import random
 
 from datetime import datetime
@@ -24,6 +23,8 @@ def get_monthly_report_list() -> dict[str, set[str]]:
             monthly_reports[year].add(track.start_time.month)
         else:
             monthly_reports[year] = {track.start_time.month}
+
+    current_app.logger.debug("Monthly Report List: %s", monthly_reports)
     return monthly_reports
 
 
@@ -46,6 +47,8 @@ def get_all_points(
             (not month or track.start_time.month != month) and
             (not day or track.start_time.day != day)):
             all_points += [(point.latitude, point.longitude) for point in track.points]
+
+    current_app.logger.debug("%d points for %s %d/%d/%d", len(all_points), activity, year, month, day)
     return all_points
 
 
@@ -62,6 +65,7 @@ def get_all_tracks(
             (not month or track.start_time.month == month) and
             (not day or track.start_time.day == day)):
             all_tracks.append(track)
+    current_app.logger.debug("%d points for %s %d/%d/%d", len(all_tracks), activity, year, month, day)
     return all_tracks
 
 
@@ -95,6 +99,7 @@ def get_activity_emoji(activity_name: str, with_text: bool = False) -> str:
         case "jogging":
             emoji = "🏃"
         case _:
+            current_app.logger.info("%s activity not defined in get_activity_emoji", activity_name)
             emoji = ""
     return f"{activity_name.capitalize() + ' ' if with_text else ''}{emoji}"
 
@@ -111,6 +116,7 @@ def get_activity_color(activity_name: str) -> str:
         case "jogging":
             return "#59b3ff"
         case _:
+            current_app.logger.info("%s activity not defined in get_activity_color", activity_name)
             return f"#{''.join([random.choice('0123456789ABCDEF') for j in range(6)])}"
 
 
