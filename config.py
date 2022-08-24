@@ -2,7 +2,7 @@ import logging
 
 import pytz
 
-from classes.TileLayer import TileLayer
+from classes.tile_layer import TileLayer
 
 
 class UserConfig:
