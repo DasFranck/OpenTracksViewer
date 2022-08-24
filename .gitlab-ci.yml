@@ -1,6 +1,7 @@
-stages:
-  - build
-  - test
+image: python:latest
+
+before_script:
+  - python --version  
 
 install_dependencies:
   stage: build
