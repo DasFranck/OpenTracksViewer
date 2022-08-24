@@ -45,10 +45,14 @@ def get_all_points(
         if ((not activity or track.activity == activity) and
             (not year and track.start_time.year != year) and
             (not month or track.start_time.month != month) and
-            (not day or track.start_time.day != day)):
+            (not day or track.start_time.day != day)
+        ):
             all_points += [(point.latitude, point.longitude) for point in track.points]
 
-    current_app.logger.debug("%d points for %s %d/%d/%d", len(all_points), activity, year, month, day)
+    current_app.logger.debug(
+        "%d points for %s %d/%d/%d", 
+        len(all_points), activity, year, month, day
+    )
     return all_points
 
 
@@ -67,9 +71,13 @@ def get_all_tracks(
         if ((not activity or track.activity == activity) and
             (not year or track.start_time.year == year) and
             (not month or track.start_time.month == month) and
-            (not day or track.start_time.day == day)):
+            (not day or track.start_time.day == day)
+        ):
             all_tracks.append(track)
-    current_app.logger.debug("%d points for %s %d/%d/%d", len(all_tracks), activity, year, month, day)
+    current_app.logger.debug(
+        "%d points for %s %d/%d/%d",
+        len(all_tracks), activity, year, month, day
+    )
     return all_tracks
 
 
@@ -175,9 +183,13 @@ def report_year_page(year: int) -> str:
         activities=get_activity_list(tracks),
         tracks=tracks,
         periods_label=[f"{month:02}/{year}" for month in range(1, 13)],
-        periods=[(
-            datetime(year, month, 1, tzinfo=current_app.config["TIMEZONE"]),
-            (datetime(year, month, 1, tzinfo=current_app.config["TIMEZONE"]) + relativedelta(months=+1)) - relativedelta(microseconds=+1)
+        periods=[
+            (
+                datetime(year, month, 1, tzinfo=current_app.config["TIMEZONE"]),
+                (
+                    datetime(year, month, 1, tzinfo=current_app.config["TIMEZONE"]) + 
+                    relativedelta(months=+1)) - relativedelta(microseconds=+1
+                )
             )
             for month in range(1, 13)
         ]
@@ -195,9 +207,13 @@ def report_month_page(year: int, month: int) -> str:
         activities=get_activity_list(tracks),
         tracks=tracks,
         periods_label=[f"{day:02}/{month:02}" for day in day_list],
-        periods=[(
-            datetime(year, month, day, tzinfo=current_app.config["TIMEZONE"]),
-            (datetime(year, month, day, tzinfo=current_app.config["TIMEZONE"]) + relativedelta(days=+1)) - relativedelta(microseconds=+1)
+        periods=[
+            (
+                datetime(year, month, day, tzinfo=current_app.config["TIMEZONE"]),
+                (
+                    datetime(year, month, day, tzinfo=current_app.config["TIMEZONE"]) + 
+                    relativedelta(days=+1)) - relativedelta(microseconds=+1
+                )
             )
             for day in day_list
         ]
