@@ -51,7 +51,7 @@ def get_all_points(
             all_points += [(point.latitude, point.longitude) for point in track.points]
 
     current_app.logger.debug(
-        "%d points for %s %d/%d/%d", 
+        "%d points for %s %d/%d/%d",
         len(all_points), activity, year, month, day
     )
     return all_points
@@ -189,8 +189,8 @@ def report_year_page(year: int) -> str:
             (
                 datetime(year, month, 1, tzinfo=current_app.config["TIMEZONE"]),
                 (
-                    datetime(year, month, 1, tzinfo=current_app.config["TIMEZONE"]) + 
-                    relativedelta(months=+1)) - relativedelta(microseconds=+1
+                    datetime(year, month, 1, tzinfo=current_app.config["TIMEZONE"]) +
+                    relativedelta(months=+1) - relativedelta(microseconds=+1)
                 )
             )
             for month in range(1, 13)
@@ -213,8 +213,8 @@ def report_month_page(year: int, month: int) -> str:
             (
                 datetime(year, month, day, tzinfo=current_app.config["TIMEZONE"]),
                 (
-                    datetime(year, month, day, tzinfo=current_app.config["TIMEZONE"]) + 
-                    relativedelta(days=+1)) - relativedelta(microseconds=+1
+                    datetime(year, month, day, tzinfo=current_app.config["TIMEZONE"]) +
+                    relativedelta(days=+1) - relativedelta(microseconds=+1)
                 )
             )
             for day in day_list
