@@ -1,3 +1,5 @@
+"""Includes Tile Layer Enum."""
+
 from enum import Enum
 
 

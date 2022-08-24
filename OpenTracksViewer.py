@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
+"""Main OTV file."""
+
 import argparse
+import logging
 import os
 
 import gpxpy
@@ -12,6 +15,7 @@ from classes.track import Track
 
 
 def load_gpxs(gpxs_path: str) -> dict[str, Track]:
+    """Load GPX recursively from path and return them as a dict, key is filename-index."""
     tracks = {}
     for dirpath, _, filenames in os.walk(gpxs_path):
         for filename in filenames:
@@ -26,6 +30,7 @@ def load_gpxs(gpxs_path: str) -> dict[str, Track]:
 
 
 def load_config(app: Flask, args: argparse.Namespace):
+    """Load config python file, path specified by args.config."""
     app.config.from_object(args.config)
     if args.log_level:
         app.logger.setLevel(args.log_level.upper())
@@ -39,6 +44,7 @@ def load_config(app: Flask, args: argparse.Namespace):
 
 
 def main():
+    """Parse arguments and runs OTV flask app."""
     parser = argparse.ArgumentParser()
     parser.add_argument("gpxs_path")
     parser.add_argument(
@@ -69,7 +75,7 @@ def main():
     app = Flask(__name__)
     load_config(app, args)
     app.config["tracks"] = load_gpxs(args.gpxs_path)
-    app.logger.info("%d tracks loaded", len(app.config["tracks"]))
+    logging.info("%d tracks loaded", len(app.config["tracks"]))
     app.register_blueprint(frontend)
     app.run(host=app.config["HOST"], port=app.config["PORT"])
 

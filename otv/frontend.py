@@ -1,3 +1,5 @@
+"""OTV Frontend for flask app."""
+
 import calendar
 import random
 
@@ -155,6 +157,7 @@ def format_datetime(input_datetime: datetime) -> str:
 
 @frontend.route("/track/<string:track_id>")
 def track_page(track_id: str) -> str:
+    """Track page route."""
     track: Track = current_app.config["tracks"][track_id]
     return render_template(
         "track.html.j2",
@@ -168,6 +171,7 @@ def track_page(track_id: str) -> str:
 
 @frontend.route("/activity/<string:activity>")
 def activity_page(activity: str) -> str:
+    """Activity page route."""
     return render_template(
         "activity.html.j2",
         default_tile_layer=current_app.config["DEFAULT_TILE_LAYER"],
@@ -178,6 +182,7 @@ def activity_page(activity: str) -> str:
 
 @frontend.route("/report/<int:year>")
 def report_year_page(year: int) -> str:
+    """Yearly report page route."""
     tracks = get_all_tracks(year=year)
     return render_template(
         "periodic_report.html.j2",
@@ -200,6 +205,7 @@ def report_year_page(year: int) -> str:
 
 @frontend.route("/report/<int:year>/<int:month>")
 def report_month_page(year: int, month: int) -> str:
+    """Monthly report page route."""
     day_list = range(1, calendar.monthrange(year, month)[1] + 1)
     tracks = get_all_tracks(year=year, month=month)
     return render_template(
@@ -224,6 +230,7 @@ def report_month_page(year: int, month: int) -> str:
 
 @frontend.route("/report/<int:year>/<int:month>/<int:day>")
 def report_day_page(year: int, month: int, day: int) -> str:
+    """Daily report page route."""
     tracks = get_all_tracks(year=year, month=month, day=day)
     return render_template(
         "periodic_report.html.j2",
@@ -237,6 +244,7 @@ def report_day_page(year: int, month: int, day: int) -> str:
 
 @frontend.route("/")
 def index_page() -> str:
+    """Index/Root page route."""
     return render_template(
         "index.html.j2",
         tracks=current_app.config["tracks"],

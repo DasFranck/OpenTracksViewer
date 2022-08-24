@@ -1,10 +1,15 @@
+"""Configuration file for OTV."""
+
 import logging
+
+from dataclasses import dataclass
 
 import pytz
 
 from classes.tile_layer import TileLayer
 
 
+@dataclass
 class UserConfig:
     """This is where you can edit OTV Behaviour."""
 
