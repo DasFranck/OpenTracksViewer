@@ -8,7 +8,7 @@ import gpxpy
 from flask import Flask
 
 from otv.frontend import frontend
-from otv.track import Track
+from classes.track import Track
 
 
 def load_gpxs(gpxs_path: str) -> dict[str, Track]:
