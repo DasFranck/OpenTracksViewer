@@ -8,7 +8,7 @@ from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template, current_app
 
 from classes.tile_layer import TileLayer
-from otv.track import Track
+from classes.track import Track
 
 frontend = Blueprint("frontend", __name__)
 
@@ -58,6 +58,10 @@ def get_all_tracks(
     month: int = 0,
     day: int = 0
 ) -> list[Track]:
+    """
+    Get all tracks, useful for periodic reports.
+    Can filter by activity, year and/or month.
+    """
     all_tracks = []
     for track in current_app.config["tracks"].values():
         if ((not activity or track.activity == activity) and
@@ -73,6 +77,7 @@ def get_all_tracks(
 def get_activity_list(
     tracks: Optional[list[Track] | dict[Any, Track]] = None
 ) -> set[str]:
+    """Get all tracks' activities, useful for index."""
     if tracks is None:
         tracks = current_app.config["tracks"]
     if isinstance(tracks, dict):
@@ -84,11 +89,13 @@ def get_activity_list(
 
 @frontend.app_template_filter()
 def get_month_name(month_number: int) -> str:
+    """Return string month name."""
     return calendar.month_name[month_number]
 
 
 @frontend.app_template_filter()
 def get_activity_emoji(activity_name: str, with_text: bool = False) -> str:
+    """Return emoji associated to activity, with activity name if needed."""
     match activity_name.lower():
         case "biking":
             emoji = "🚴"
@@ -106,6 +113,7 @@ def get_activity_emoji(activity_name: str, with_text: bool = False) -> str:
 
 @frontend.app_template_filter()
 def get_activity_color(activity_name: str) -> str:
+    """Return color associated to activity, random if not found."""
     match activity_name.lower():
         case "biking":
             return "#fff859"
@@ -122,6 +130,7 @@ def get_activity_color(activity_name: str) -> str:
 
 @frontend.app_template_filter()
 def format_duration(duration: int) -> str:
+    """Format tracks duration to easily readable format"""
     hours = duration // 3600
     minutes = duration % 3600 // 60
     seconds = duration % 60
@@ -130,6 +139,7 @@ def format_duration(duration: int) -> str:
 
 @frontend.app_template_filter()
 def format_datetime(input_datetime: datetime) -> str:
+    """Format datetime to easily readable format"""
     return input_datetime.strftime("%Y-%m-%d %H:%M:%S")  # Careful UTC
 
 

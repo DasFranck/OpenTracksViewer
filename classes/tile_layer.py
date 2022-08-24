@@ -3,7 +3,7 @@ from enum import Enum
 
 class TileLayer(Enum):
     """
-    Enum value is a tuple of strings
+    Enum value is a tuple of strings.
     [0]: Generic tile format string
     [1]: Attribution
     [2]: API Key or None
