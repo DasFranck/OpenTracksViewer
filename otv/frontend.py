@@ -42,7 +42,8 @@ def get_all_points(
 
     all_points = []
     for track in current_app.config["tracks"].values():
-        if ((not activity or track.activity == activity) and
+        if (
+            (not activity or track.activity == activity) and
             (not year and track.start_time.year != year) and
             (not month or track.start_time.month != month) and
             (not day or track.start_time.day != day)
@@ -68,7 +69,8 @@ def get_all_tracks(
     """
     all_tracks = []
     for track in current_app.config["tracks"].values():
-        if ((not activity or track.activity == activity) and
+        if (
+            (not activity or track.activity == activity) and
             (not year or track.start_time.year == year) and
             (not month or track.start_time.month == month) and
             (not day or track.start_time.day == day)
