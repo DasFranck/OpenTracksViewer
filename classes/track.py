@@ -1,3 +1,5 @@
+"""Includes Track class."""
+
 from datetime import datetime
 
 from gpxpy.gpx import GPXTrack, GPXTrackPoint
@@ -6,6 +8,8 @@ from .point import Point
 
 
 class Track:
+    """Represents an OpenTracksViewer's Track."""
+
     name: str
     activity: str | None
     points: list[Point]

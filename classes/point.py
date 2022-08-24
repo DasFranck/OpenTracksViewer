@@ -1,9 +1,12 @@
+"""Includes Point dataclass."""
+
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 
 
 @dataclass
 class Point:
+    """Dataclass representing a GPX point."""
     latitude: float
     longitude: float
     elevation: float | None
