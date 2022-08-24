@@ -1,0 +1,19 @@
+stages:
+  - build
+  - test
+
+install_dependencies:
+  stage: build
+  script:
+    - pip install -r requirements.txt requirements-test.txt
+
+lint:
+  stage: test
+  script:
+    - flake8 
+    - pylint .
+  
+typing:
+  stage: test
+  script:
+    - mypy
