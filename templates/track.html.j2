@@ -2,12 +2,14 @@
 
 {%- block head %} {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet/dist/leaflet.css') }}" crossorigin=""/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css') }}" crossorigin=""/>
 {%- endblock %}
 
 {%- block title %}<title>OpenTracks Viewer - {{track.start_time|format_datetime}}</title>{% endblock %}
 
 {%- block content %}
     <script src="{{ url_for('static', filename='node_modules/leaflet/dist/leaflet.js') }}"></script>
+    <script src="{{ url_for('static', filename='node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
 
     <div class="d-flex justify-content-center">
         <h1 class="display-1">{{track.start_time|format_datetime}}</h1> 

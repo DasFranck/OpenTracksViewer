@@ -6,6 +6,7 @@
     "heatmap.js": "^2.0.5",
     "jquery": "^3.6.0",
     "leaflet": "^1.8.0",
+    "leaflet-fullscreen": "^1.0.2",
     "leaflet.elevation": "^0.0.3",
     "leaflet.heightgraph": "^1.4.0"
   }
