@@ -58,6 +58,35 @@ def get_all_points(
     )
     return all_points
 
+@frontend.app_template_global()
+def get_heatmap_point_data(
+    activity: str = None,
+    year: int = None,
+    month: int = None,
+    day: int = None,
+    precision: int = 5,
+) -> tuple[list[dict[str, float | int]], list[float, float], list[float, float]]:
+    """
+    Returns heatmap.js data and bounds.
+    """
+    heatmap_points = {}
+    for point in get_all_points(activity, year, month, day):
+        position = (round(point[0], precision), round(point[1], precision))
+        if position in heatmap_points:
+            heatmap_points[position] += 1
+        else:
+            heatmap_points[position] = 1
+    return (
+        [
+            {
+                "lat": heatmap_point[0][0], 
+                "lng": heatmap_point[0][1], 
+                "count": heatmap_point[1]
+            } for heatmap_point in heatmap_points.items()
+        ],
+        [min(heatmap_points.keys(), key=lambda x: x[0])[0], min(heatmap_points.keys(), key=lambda x: x[1])[1]],
+        [max(heatmap_points.keys(), key=lambda x: x[0])[0], max(heatmap_points.keys(), key=lambda x: x[1])[1]],
+    )
 
 def get_all_tracks(
     activity: str = None,
