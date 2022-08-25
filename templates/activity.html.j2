@@ -6,6 +6,8 @@
 
 {%- block title %}<title>OpenTracks Viewer - {{activity|get_activity_emoji(with_text=True)}}</title>{% endblock %}
 
+{% set heatmap_data, map_bounds_min, map_bounds_max = get_heatmap_point_data(activity=activity) %}
+
 {%- block content %}
     <script src="{{ url_for('static', filename='node_modules/leaflet/dist/leaflet.js') }}"></script>
     <script src="{{ url_for('static', filename='node_modules/heatmap.js/build/heatmap.min.js') }}"></script>
@@ -17,11 +19,34 @@
             <br> 
     <div class="container">
         <div class="row">
-            <div class="col-8">
+            <div class="col-12">
                 <div id="map"></div>
                 <style>#map { height: 1000px; }</style>
                 <script>
+                    var heatmapLayer = new HeatmapOverlay({
+                        "radius": 0.00025,
+                        "maxOpacity": .8,
+                        "scaleRadius": true,
+                        "useLocalExtrema": true,
+                        latField: 'lat',
+                        lngField: 'lng',
+                        valueField: 'count'
+                    });
+
+
                     {% include "leaflet.js.j2" %}
+
+
+                    map.addLayer(heatmapLayer);
+                    
+                    heatmapLayer.setData({
+                        data: {{ heatmap_data }}
+                    })
+
+                    map.fitBounds([
+                        {{map_bounds_min}},
+                        {{map_bounds_max}}
+                    ]);
                 </script>
             </div>
         </div>
