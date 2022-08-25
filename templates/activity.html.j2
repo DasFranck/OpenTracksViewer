@@ -8,6 +8,8 @@
 
 {%- block content %}
     <script src="{{ url_for('static', filename='node_modules/leaflet/dist/leaflet.js') }}"></script>
+    <script src="{{ url_for('static', filename='node_modules/heatmap.js/build/heatmap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='node_modules/heatmap.js/plugins/leaflet-heatmap/leaflet-heatmap.js') }}"></script>
 
     <div class="d-flex justify-content-center">
         <h1 class="display-1">{{activity|get_activity_emoji(with_text=True)}}</h1> 
