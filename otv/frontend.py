@@ -58,6 +58,7 @@ def get_all_points(
     )
     return all_points
 
+
 @frontend.app_template_global()
 def get_heatmap_point_data(
     activity: str = None,
@@ -80,14 +81,21 @@ def get_heatmap_point_data(
     return (
         [
             {
-                "lat": heatmap_point[0][0], 
-                "lng": heatmap_point[0][1], 
+                "lat": heatmap_point[0][0],
+                "lng": heatmap_point[0][1],
                 "count": heatmap_point[1]
             } for heatmap_point in heatmap_points.items()
         ],
-        [min(heatmap_points.keys(), key=lambda x: x[0])[0], min(heatmap_points.keys(), key=lambda x: x[1])[1]],
-        [max(heatmap_points.keys(), key=lambda x: x[0])[0], max(heatmap_points.keys(), key=lambda x: x[1])[1]],
+        [
+            min(heatmap_points.keys(), key=lambda x: x[0])[0],
+            min(heatmap_points.keys(), key=lambda x: x[1])[1]
+        ],
+        [
+            max(heatmap_points.keys(), key=lambda x: x[0])[0],
+            max(heatmap_points.keys(), key=lambda x: x[1])[1]
+        ],
     )
+
 
 def get_all_tracks(
     activity: str = None,
