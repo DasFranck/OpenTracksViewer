@@ -65,11 +65,12 @@ def get_heatmap_point_data(
     month: int = None,
     day: int = None,
     precision: int = 5,
-) -> tuple[list[dict[str, float | int]], list[float, float], list[float, float]]:
+) -> tuple[list[dict[str, float | int]], list[float], list[float]]:
     """
-    Returns heatmap.js data and bounds.
+    Returns heatmap.js data, min bounds and max bounds.
+    Bounds are returned as a list to correspond to js syntax.
     """
-    heatmap_points = {}
+    heatmap_points: dict[tuple[float, float], int] = {}
     for point in get_all_points(activity, year, month, day):
         position = (round(point[0], precision), round(point[1], precision))
         if position in heatmap_points:
