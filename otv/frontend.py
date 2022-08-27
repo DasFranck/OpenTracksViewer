@@ -9,7 +9,6 @@ from typing import Any, Optional
 from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template, current_app
 
-from classes.tile_layer import TileLayer
 from classes.track import Track
 
 frontend = Blueprint("frontend", __name__)

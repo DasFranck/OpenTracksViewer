@@ -9,10 +9,10 @@ import os
 import gpxpy
 
 from flask import Flask
-from classes.tile_layer import TileLayer
 
 from otv.frontend import frontend
 from classes.track import Track
+from classes.tile_layer import TileLayer
 
 
 def load_gpxs(gpxs_path: str) -> dict[str, Track]:
