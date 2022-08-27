@@ -151,7 +151,7 @@ def get_activity_emoji(activity_name: str, with_text: bool = False) -> str:
             emoji = "🚴"
         case "kayaking":
             emoji = "🚣"
-        case "walking":
+        case "walking" | "off-trail walking":
             emoji = "🚶"
         case "jogging":
             emoji = "🏃"
@@ -169,7 +169,7 @@ def get_activity_color(activity_name: str) -> str:
             return "#fff859"
         case "kayaking":
             return "#ffa559"
-        case "walking":
+        case "walking" | "off-trail walking":
             return "#a559ff"
         case "jogging":
             return "#59b3ff"
