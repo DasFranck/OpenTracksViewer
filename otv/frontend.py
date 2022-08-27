@@ -200,8 +200,6 @@ def track_page(track_id: str) -> str:
     return render_template(
         "track.html.j2",
         track=track,
-        default_tile_layer=current_app.config["DEFAULT_TILE_LAYER"],
-        tile_layers=TileLayer,
         polyline_points=[[point.latitude, point.longitude] for point in track.points],
         elevation_list=[[point.distance_2d, point.elevation] for point in track.points],
     )
@@ -212,8 +210,6 @@ def activity_page(activity: str) -> str:
     """Activity page route."""
     return render_template(
         "activity.html.j2",
-        default_tile_layer=current_app.config["DEFAULT_TILE_LAYER"],
-        tile_layers=TileLayer,
         activity=activity,
     )
 
