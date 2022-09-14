@@ -5,6 +5,10 @@
 {%- block content %}
 <script src="{{ url_for('static', filename='node_modules/chart.js/dist/chart.min.js') }}"></script>
 
+    <div class="d-flex justify-content-center">
+        <h1 class="display-1">{{ year }}{% if month is defined %} - {{month|get_month_name}}{% endif %}{% if day is defined %} - {{day}}{% endif %}</h1>
+    </div>
+
 <div class="container">
     Activities:
     <ul>
