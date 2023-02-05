@@ -28,7 +28,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         {%- for activity in get_activity_list()|sort %}
-                            <li><a class="dropdown-item" href="/activity/{{activity}}">{{activity|capitalize}}</a></li>
+                            <li><a class="dropdown-item" href="/activity/{{activity}}">{{activity|get_activity_emoji(with_text=True)}}</a></li>
                         {%- endfor %}
                         </ul>
                     </li>
@@ -37,7 +37,7 @@
                             Reports
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        {%- for year, month_list in get_monthly_report_list().items() %}
+                        {%- for year, month_list in get_monthly_report_list().items()|sort(reverse=True) %}
                             <li><a class="dropdown-item" href="/report/{{year}}">{{year}}</a></li>
                             {%- for month in month_list|sort(reverse=True) %}
                                 <li><a class="dropdown-item" href="/report/{{year}}/{{month}}">- {{month|get_month_name}}</a></li>
