@@ -31,10 +31,10 @@ def get_monthly_report_list() -> dict[str, set[str]]:
 
 @frontend.app_template_global()
 def get_all_points(
-    activity: str = None,
-    year: int = None,
-    month: int = None,
-    day: int = None
+    activity: str | None = None,
+    year: int | None = None,
+    month: int | None = None,
+    day: int | None = None
 ) -> list[tuple[float, float]]:
     """
     Get all points, useful for heatmaps.
@@ -60,10 +60,10 @@ def get_all_points(
 
 @frontend.app_template_global()
 def get_heatmap_point_data(
-    activity: str = None,
-    year: int = None,
-    month: int = None,
-    day: int = None,
+    activity: str | None = None,
+    year: int | None = None,
+    month: int | None = None,
+    day: int | None = None,
     precision: int = 5,
 ) -> tuple[list[dict[str, float | int]], list[float], list[float]]:
     """
@@ -97,7 +97,7 @@ def get_heatmap_point_data(
 
 
 def get_all_tracks(
-    activity: str = None,
+    activity: str | None = None,
     year: int = 0,
     month: int = 0,
     day: int = 0
