@@ -148,12 +148,14 @@ def get_activity_emoji(activity_name: str, with_text: bool = False) -> str:
     match activity_name.lower():
         case "biking":
             emoji = "🚴"
-        case "kayaking":
-            emoji = "🚣"
-        case "walking" | "off-trail walking":
-            emoji = "🚶"
         case "jogging":
             emoji = "🏃"
+        case "kayaking":
+            emoji = "🚣"
+        case "skiing":
+            emoji = "⛷️"
+        case "walking" | "off-trail walking":
+            emoji = "🚶"
         case "unknown":
             emoji = "❓"
         case _:
