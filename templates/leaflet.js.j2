@@ -3,14 +3,14 @@ var map = L.map('map');
 
 // Build dict of baseTileLayers and set map default layer
 var baseTileLayers = {}
-{% for layer in config.TILE_LAYERS %}
-    baseTileLayers["{{layer.name}}"] =
-        L.tileLayer("{{layer.value[0]}}", {
-            attribution: "{{layer.value[1]}}",
+{% for layer_name, layer in config.TILE_LAYERS.items() %}
+    baseTileLayers["{{layer_name}}"] =
+        L.tileLayer("{{layer.generic_tile_format}}", {
+            attribution: "{{layer.attribution}}",
             maxZoom: 19
         })
-    {% if layer.name == config.DEFAULT_TILE_LAYER.name %}
-        map.addLayer(baseTileLayers["{{layer.name}}"])
+    {% if layer_name == config.DEFAULT_TILE_LAYER.name %}
+        map.addLayer(baseTileLayers["{{layer_name}}"])
     {% endif %}
 {% endfor %}
 
