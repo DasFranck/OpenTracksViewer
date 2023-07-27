@@ -76,7 +76,6 @@ def main():
     app = Flask(__name__)
     load_config(app, args)
     app.config["tracks"] = load_gpxs(args.gpxs_path)
-    app.config["TILE_LAYERS"] = TileLayer
     logging.info("%d tracks loaded", len(app.config["tracks"]))
     app.register_blueprint(frontend)
     app.run(host=app.config["HOST"], port=app.config["PORT"])
