@@ -13,6 +13,8 @@ from classes.tile_layer import TileLayer
 class UserConfig:
     """This is where you can edit OTV Behaviour."""
 
+    DEFAULT_LOGGING_LEVEL = logging.INFO
+
     HOST = "127.0.0.1"
     PORT = 5000
 
