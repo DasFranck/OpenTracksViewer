@@ -154,9 +154,11 @@ def get_activity_emoji(activity_name: str, with_text: bool = False) -> str:
             emoji = "🚶"
         case "jogging":
             emoji = "🏃"
+        case "unknown":
+            emoji = "❓"
         case _:
             current_app.logger.info("%s activity not defined in get_activity_emoji", activity_name)
-            emoji = ""
+            emoji = "❓"
     return f"{activity_name.capitalize() + ' ' if with_text else ''}{emoji}"
 
 
