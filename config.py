@@ -18,9 +18,6 @@ class UserConfig:
     # Timezone used by OTV for date processing
     TIMEZONE = pytz.timezone("Europe/Paris")
 
-    # Default Tile Layer to be used by Leaflet Maps
-    DEFAULT_TILE_LAYER = "Cycle"
-
     TILE_LAYERS = {
         "Normal": TileLayer(
             "https://{s}.tile.osm.org/{z}/{x}/{y}.png",
@@ -39,3 +36,6 @@ class UserConfig:
             "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
         ),
     }
+
+    # Default Tile Layer to be used by Leaflet Maps
+    DEFAULT_TILE_LAYER_NAME = "Cycle"

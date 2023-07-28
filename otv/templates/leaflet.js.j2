@@ -9,7 +9,7 @@ var baseTileLayers = {}
             attribution: "{{layer.attribution}}",
             maxZoom: 19
         })
-    {% if layer_name == config.DEFAULT_TILE_LAYER.name %}
+    {% if layer_name == config.DEFAULT_TILE_LAYER_NAME %}
         map.addLayer(baseTileLayers["{{layer_name}}"])
     {% endif %}
 {% endfor %}
