@@ -2,7 +2,7 @@ image: python:latest
 
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-  PYTHON_FILES: "config.py OpenTracksViewer.py classes/*.py otv/*.py"
+  PYTHON_FILES: "config.py gunicorn.conf.py otv/*.py otv/classes/*.py"
 
 cache:
   paths:
