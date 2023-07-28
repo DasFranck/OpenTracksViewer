@@ -6,17 +6,14 @@ from dataclasses import dataclass
 
 import pytz
 
-from classes.tile_layer import TileLayer
+from otv.classes.tile_layer import TileLayer
 
 
 @dataclass
 class UserConfig:
     """This is where you can edit OTV Behaviour."""
-
-    DEFAULT_LOGGING_LEVEL = logging.INFO
-
-    HOST = "127.0.0.1"
-    PORT = 5000
+    # TBD 
+    TRACKS_FOLDER_PATH = None 
 
     # Timezone used by OTV for date processing
     TIMEZONE = pytz.timezone("Europe/Paris")

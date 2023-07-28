@@ -9,7 +9,7 @@ from typing import Any, Optional
 from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template, current_app
 
-from classes.track import Track
+from .classes.track import Track
 
 frontend = Blueprint("frontend", __name__)
 
@@ -146,7 +146,7 @@ def get_month_name(month_number: int) -> str:
 def get_activity_emoji(activity_name: str, with_text: bool = False) -> str:
     """Return emoji associated to activity, with activity name if needed."""
     match activity_name.lower():
-        case "biking":
+        case "biking" | "mountain biking" | "road biking":
             emoji = "🚴"
         case "jogging":
             emoji = "🏃"
