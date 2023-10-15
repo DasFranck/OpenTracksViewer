@@ -134,3 +134,8 @@ node_modules
 
 # VSCode
 .vscode
+
+# OTV
+my_config.py
+logs/
+otv.sqlite3
