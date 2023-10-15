@@ -170,6 +170,8 @@ def get_activity_color(activity_name: str) -> str:
     match activity_name.lower():
         case "biking":
             return "#fff859"
+        case "road biking":
+            return "#807e78"
         case "kayaking":
             return "#ffa559"
         case "walking" | "off-trail walking":
