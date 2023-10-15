@@ -1,3 +1,5 @@
+"""WSGI Entry Point file"""
+
 import os
 
 from pathlib import Path

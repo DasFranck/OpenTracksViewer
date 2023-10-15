@@ -2,6 +2,7 @@
 
 from datetime import datetime
 
+from flask import current_app
 from gpxpy.gpx import GPXTrack, GPXTrackPoint
 
 from .point import Point
@@ -20,11 +21,6 @@ class Track:
     length_2d: float
     length_3d: float
 
-    min_latitude: float | None
-    max_latitude: float | None
-    min_longitude: float | None
-    max_longitude: float | None
-
     uphill: float
     downhill: float
 
@@ -33,6 +29,11 @@ class Track:
     moving_distance: float
     stopped_distance: float
     max_speed: float
+
+    min_latitude: float | None
+    max_latitude: float | None
+    min_longitude: float | None
+    max_longitude: float | None
 
     def _get_points(self, gpx_points: list[GPXTrackPoint]) -> list[Point]:
         total_2d_distance = 0.0
@@ -57,11 +58,15 @@ class Track:
             if point_distance_2d := gpx_point.distance_2d(gpx_points[index - 1]):
                 total_2d_distance += point_distance_2d
             else:
-                pass  # Add warning error here
+                current_app.logger.warning(
+                    "GPX Point's distance2d returned None"
+                ) # TODO: Add more details
             if point_distance_3d := gpx_point.distance_3d(gpx_points[index - 1]):
                 total_3d_distance += point_distance_3d
             else:
-                pass  # Add warning error here
+                current_app.logger.warning(
+                    "GPX Point's distance3d returned None"
+                ) # TODO: Add more details
         return points
 
     def __init__(self, track_name: str, gpx_track: GPXTrack):
