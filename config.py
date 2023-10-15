@@ -1,7 +1,5 @@
 """Configuration file for OTV."""
 
-import logging
-
 from dataclasses import dataclass
 
 import pytz
@@ -12,12 +10,13 @@ from otv.classes.tile_layer import TileLayer
 @dataclass
 class UserConfig:
     """This is where you can edit OTV Behaviour."""
-    # TBD 
-    TRACKS_FOLDER_PATH = None 
+    # Path of folder containing Open Tracks files
+    TRACKS_FOLDER_PATH = None
 
     # Timezone used by OTV for date processing
     TIMEZONE = pytz.timezone("Europe/Paris")
 
+    # Tile Layers that can used in map view
     TILE_LAYERS = {
         "Normal": TileLayer(
             "https://{s}.tile.osm.org/{z}/{x}/{y}.png",
