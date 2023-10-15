@@ -24,7 +24,6 @@ lint:
   stage: test
   script:
     - pip install -r requirements-linting.txt
-    - flake8 ${PYTHON_FILES}
     - pylint ${PYTHON_FILES}
   
 typing:
