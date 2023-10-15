@@ -42,4 +42,3 @@ def create_app() -> Flask:
     app.logger.info("%d tracks loaded", len(app.config["tracks"]))
     app.register_blueprint(frontend)
     return app
-
